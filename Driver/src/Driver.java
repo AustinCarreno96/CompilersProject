@@ -9,16 +9,13 @@ import org.antlr.v4.runtime.Token;
 public class Driver {
 
     public static void main(String[] args) throws Exception {
-    //------------------------------------------------------------------------------------------------------------------
-        // TODO: TEST
-        System.out.println("Parsing: fibonacci.micro");
-
-        FileInputStream file = new FileInputStream(new File("fibonacci.micro"));
-        //------------------------------------------------------------------------------------------------------------------
+        //--------------------------------------------------------------------------------------------------------------
+        FileInputStream file = new FileInputStream(new File("nested.micro"));
+        //--------------------------------------------------------------------------------------------------------------
         ANTLRInputStream input = new ANTLRInputStream(file);
         Little lexer = new Little(input);
-
         Token token = lexer.nextToken();
+
         while(token.getType() != Little.EOF) {
             System.out.println("Token Type: " + getTokenType(token.getType())
                     + "\nValue: " + token.getText());
