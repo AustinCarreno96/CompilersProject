@@ -12,7 +12,7 @@ fragment Operators : ('+' | ':=' | '(' | ')' | '!=' | '=' |  '-' | '*' | '>' | '
 // Keywords
 KEYWORD : ('PROGRAM' | 'BEGIN' | 'END' | 'FUNCTION' | 'READ' | 'WRITE' | 'IF' | 'ELSE' | 'ENDIF' | 'WHILE' | 'ENDWHILE'
                      | 'CONTINUE' | 'BREAK' | 'RETURN' | 'INT' | 'STRING' | 'VOID' | 'FLOAT') ;
-//           | 'FI' | 'ROF' | 'OPERATORS' | 'FOR'
+
 
 
 INTLITERAL : (Digit)+ ;                             // Regular Expression for int types

@@ -1,15 +1,14 @@
 // Imports
-import java.io.File;
-import java.io.FileInputStream;
+import java.io.*;
 import org.antlr.v4.runtime.*;
 
 public class Driver {
 
     public static void main(String[] args) throws Exception {
-        // Opening .micro file to read in
-        FileInputStream file = new FileInputStream(args[0]);
-        ANTLRInputStream input = new ANTLRInputStream(file);
-        Little lexer = new Little(input);
+        // Opening .micro file to read in 
+        BufferedReader buffread = new BufferedReader(new InputStreamReader(System.in));
+	    ANTLRInputStream code = new ANTLRInputStream(buffread);
+        Little lexer = new Little(code);
         Token token = lexer.nextToken();
 
         // Printing the keyword and token
