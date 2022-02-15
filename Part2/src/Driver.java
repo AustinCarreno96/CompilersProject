@@ -1,37 +1,25 @@
 // Imports
 import java.io.*;
-import org.antlr.runtime.*;
-
-import static java.lang.System.*;
+import org.antlr.v4.runtime.*;
 
 public class Driver {
     public static void main(String[] args) throws Exception {
-//        BufferedReader buffRead = new BufferedReader(new InputStreamReader(System.in));
-//        ANTLRInputStream code = new ANTLRInputStream(buffRead);
-//
-//        LittleLexer lexer = new LittleLexer(code);
-//        Token token = (Token) lexer.nextToken();
-//        LittleParser parser = new LittleParser(token);
+        InputStream inputStream = System.in;
+        inputStream = new FileInputStream(args[0]);
 
-        // TODO: Fix file input
-        String file = args[0];
-//        InputStream inputStreamReader = in(file);
-        StringBuilder buffRead = new StringBuilder((CharSequence) new InputStreamReader(in));
-        String source = buffRead.toString();
-        // TODO: Hanging up here
-        org.antlr.v4.runtime.ANTLRInputStream code = new org.antlr.v4.runtime.ANTLRInputStream(source);
-        LittleLexer lexer = new LittleLexer((org.antlr.v4.runtime.CharStream) code);
-        CommonTokenStream token = new CommonTokenStream((TokenSource) lexer);
-        LittleParser parser = new LittleParser((org.antlr.v4.runtime.TokenStream) token);
+        ANTLRInputStream input = new ANTLRInputStream(inputStream);
+        LittleLexer lexer = new LittleLexer(input);
+        CommonTokenStream token = new CommonTokenStream(lexer);
+        LittleParser parser = new LittleParser(token);
 
         parser.removeErrorListeners();
         parser.program();
 
         if (parser.getNumberOfSyntaxErrors() > 0) {
-            out.println("Rejected");
+            System.out.println("Not Accepted");
         } else {
-            out.println("Accepted");
-        }
+            System.out.println("Accepted");
+        }// end if/else
 
 
 
