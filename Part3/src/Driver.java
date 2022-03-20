@@ -64,7 +64,9 @@ class SymbolExtractor extends LittleBaseListener {
     @Override public void enterPgm_body(LittleParser.Pgm_bodyContext ctx) {
 
     }
-}
+}// end SymbolExtractor class
+
+
 class SymbolTable {
 
     // To understand what scope we are in
