@@ -7,8 +7,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-<<<<<<< HEAD
-    <orderEntry type="module-library" exported="">
+    <orderEntry type="module-library">
       <library>
         <CLASSES>
           <root url="jar://$ANTLR$!/" />
@@ -17,7 +16,5 @@
         <SOURCES />
       </library>
     </orderEntry>
-=======
->>>>>>> origin/main
   </component>
 </module>
