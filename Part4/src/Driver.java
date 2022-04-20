@@ -8,7 +8,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class Driver {
-    public static void main(String args[]) throws Exception {
+    public static void main(String[] args) throws Exception {
         InputStream inputStream = new FileInputStream(args[0]);
         ANTLRInputStream input = new ANTLRInputStream(inputStream);
 
@@ -29,8 +29,11 @@ public class Driver {
         ParseTreeWalker walker = new ParseTreeWalker();
         ParseTree tree = parser.program();
 
+        System.out.println(tree);
+
         walker.walk(SymbolExtractor,tree);
         LinkedHashMap<String, SymbolTable> map = SymbolExtractor.getSymbolTable();
+//        ASTNode ast = listener
         Iterator<Map.Entry<String, SymbolTable>> iterator = map.entrySet().iterator();
 
     }

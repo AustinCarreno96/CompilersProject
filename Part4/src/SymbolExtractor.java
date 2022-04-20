@@ -5,9 +5,12 @@ import java.util.LinkedHashMap;
 public class SymbolExtractor extends LittleBaseListener {
     private static int blockCount = 0;                              // Initializing count of block tables
     private final Stack<String> symbolTable_Stack = new Stack<>();  // Initializing a stack to track tables
+    private final Stack<BNode> node_stack = new Stack<>();          // Stack to hold new nodes
+
 
     // Keeping track of the current table by initializing a currentTable Hash Table
     private final LinkedHashMap<String, SymbolTable> currentTable = new LinkedHashMap<>();
+
 
     // Empty symbolExtractor Constructor
     public SymbolExtractor() { }
@@ -21,6 +24,9 @@ public class SymbolExtractor extends LittleBaseListener {
     @Override public void exitProgram(LittleParser.ProgramContext ctx) {
         symbolTable_Stack.pop();
     }
+
+    // TODO: New
+    @Override public void exitId(LittleParser.IdContext ctx) { }
 
     @Override public void enterString_decl(LittleParser.String_declContext ctx) {
         // Adding String symbols to table
@@ -40,6 +46,12 @@ public class SymbolExtractor extends LittleBaseListener {
         }
     }
 
+    // TODO: New
+    @Override public void exitVar_decl(LittleParser.Var_declContext ctx) { }
+
+    // TODO: New
+    @Override public void exitId_tail(LittleParser.Id_tailContext ctx) { }
+
     @Override public void enterParam_decl(LittleParser.Param_declContext ctx) {
         // Adding symbols from parameters of function
         addSymbol(ctx.var_type().getText(), ctx.id().getText(), null);
@@ -54,6 +66,12 @@ public class SymbolExtractor extends LittleBaseListener {
     @Override public void exitFunc_decl(LittleParser.Func_declContext ctx) {
         symbolTable_Stack.pop();
     }
+
+    // TODO: New
+    @Override public void exitAssign_stmt(LittleParser.Assign_stmtContext ctx) { }
+
+// ---------------------------------------------------------------------------------------------------------------------
+    // TODO: Might Delete. These are not needed in final project
 
     @Override public void enterIf_stmt(LittleParser.If_stmtContext ctx) {
         // Adding to block count
@@ -97,20 +115,46 @@ public class SymbolExtractor extends LittleBaseListener {
     @Override public void exitWhile_stmt(LittleParser.While_stmtContext ctx) {
         this.symbolTable_Stack.pop();
     }
+// ---------------------------------------------------------------------------------------------------------------------
 
+    // TODO: New
     @Override public void enterWrite_stmt(LittleParser.Write_stmtContext ctx) {
-        currentTable.put(ctx.)
+//        currentTable.put(ctx.)
     }
 
+    // TODO: New
     @Override public void exitWrite_stmt(LittleParser.Write_stmtContext ctx) {
-        this.symbolTable_Stack.pop();
+//        this.symbolTable_Stack.pop();
     }
 
+    // TODO: New
+    @Override public void exitExpr(LittleParser.ExprContext ctx) { }
+
+    // TODO: new
+    @Override public void exitFactor(LittleParser.FactorContext ctx) { }
+
+    // TODO: new
+    @Override public void exitPrimary(LittleParser.PrimaryContext ctx) { }
+
+    // TODO: New
     @Override public void enterRead_stmt(LittleParser.Read_stmtContext ctx) { }
 
+    // TODO: New
     @Override public void exitRead_stmt(LittleParser.Read_stmtContext ctx) {
         this.symbolTable_Stack.pop();
     }
+
+    // TODO: New
+    @Override public void enterAddop(LittleParser.AddopContext ctx) { }
+
+    // TODO: New
+    @Override public void exitAddop(LittleParser.AddopContext ctx) { }
+
+    // TODO: New
+    @Override public void enterMulop(LittleParser.MulopContext ctx) { }
+
+    // TODO: New
+    @Override public void exitMulop(LittleParser.MulopContext ctx) { }
 
 
     // Grabbing the symbol table for printing

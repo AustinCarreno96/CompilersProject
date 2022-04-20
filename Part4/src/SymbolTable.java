@@ -20,21 +20,21 @@ public class SymbolTable {
 
 
     // Printing Tables and their symbols
-    public void printTable() {
-        // Printing the scope of the table
-        System.out.println("Symbol table " + scope);
-
-        // Finding symbols needed and printing them
-        for (ArrayList<String> symbol : symbolTable.values()) {
-            // Printing the name and type of symbol
-            String line = "name " + symbol.get(0) + " type " + symbol.get(1);
-            if (symbol.get(2) != null) {
-                // Printing the value of the symbol if it is a String
-                line = line.concat(" value " + symbol.get(2));
-            }// end if statement
-            System.out.println(line);
-        }// end for loop
-        System.out.println();
-    }// end printTable()
+//    public void printTable() {
+//        // Printing the scope of the table
+//        System.out.println("Symbol table " + scope);
+//
+//        // Finding symbols needed and printing them
+//        for (ArrayList<String> symbol : symbolTable.values()) {
+//            // Printing the name and type of symbol
+//            String line = "name " + symbol.get(0) + " type " + symbol.get(1);
+//            if (symbol.get(2) != null) {
+//                // Printing the value of the symbol if it is a String
+//                line = line.concat(" value " + symbol.get(2));
+//            }// end if statement
+//            System.out.println(line);
+//        }// end for loop
+//        System.out.println();
+//    }// end printTable()
 
 }// end SymbolTable class
