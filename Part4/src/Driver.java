@@ -29,11 +29,11 @@ public class Driver {
         ParseTreeWalker walker = new ParseTreeWalker();
         ParseTree tree = parser.program();
 
-        System.out.println(tree);
 
-        walker.walk(SymbolExtractor,tree);
+        walker.walk(SymbolExtractor, tree);
         LinkedHashMap<String, SymbolTable> map = SymbolExtractor.getSymbolTable();
-//        ASTNode ast = listener
+        ASTNode ast = SymbolExtractor.getTree();
+        System.out.println(ast);
         Iterator<Map.Entry<String, SymbolTable>> iterator = map.entrySet().iterator();
 
     }

@@ -18,6 +18,20 @@ public class SymbolTable {
         symbolTable.put(name, symbolList);
     }// end AddSymbol()
 
+    public boolean search(String table_name) {
+        boolean exists = symbolTable.get(table_name) != null;
+        return exists;
+    }
+
+    public ArrayList<String> getValue(String table_name) {
+        if (search(table_name)) {
+            return symbolTable.get(table_name);
+        }
+
+        return null;
+    }
+
+
 
     // Printing Tables and their symbols
 //    public void printTable() {

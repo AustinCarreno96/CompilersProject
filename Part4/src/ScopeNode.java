@@ -29,4 +29,12 @@ public class ScopeNode extends ASTNode{
     protected void print() {
 
     }
+
+    public void add_child(ASTNode child) {
+        this.children.add(child);
+    }
+
+    public int children_length() {
+        return children.size();
+    }
 }
