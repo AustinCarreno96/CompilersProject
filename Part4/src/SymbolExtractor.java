@@ -6,8 +6,8 @@ public class SymbolExtractor extends LittleBaseListener {
     private static int blockCount = 0;                              // Initializing count of block tables
     private final Stack<String> symbolTable_Stack = new Stack<>();  // Initializing a stack to track tables
     private final Stack<BNode> node_stack = new Stack<>();          // Stack to hold new nodes
-    private ScopeNode root;
-    private ScopeNode syntaxTree;
+    private ScopeNode root_node;
+    private ScopeNode syntax_tree;
 
     // Keeping track of the current table by initializing a currentTable Hash Table
     private final LinkedHashMap<String, SymbolTable> currentTable = new LinkedHashMap<>();
@@ -20,13 +20,13 @@ public class SymbolExtractor extends LittleBaseListener {
     @Override public void enterProgram(LittleParser.ProgramContext ctx) {
         currentTable.put("GLOBAL", new SymbolTable("GLOBAL"));  // Creating first table for the global scope
         symbolTable_Stack.push("GLOBAL");
-        syntaxTree = root = new ScopeNode("GLOBAL");
+        syntax_tree = root_node = new ScopeNode("GLOBAL");
     }
 
     @Override public void exitProgram(LittleParser.ProgramContext ctx) {
 //        symbolTable_Stack.pop();
         node_stack.pop();
-        syntaxTree = root;
+        syntax_tree = root_node;
 
         while (!node_stack.empty()) {
             System.out.println("Error: node_stack is not empty.");
@@ -72,7 +72,7 @@ public class SymbolExtractor extends LittleBaseListener {
     // TODO: New
     //       - Work on
     @Override public void exitString_decl(LittleParser.String_declContext ctx) {
-        syntaxTree.add_child(node_stack.pop());
+        syntax_tree.add_child(node_stack.pop());
     }
 
     // TODO: Work on
@@ -94,7 +94,7 @@ public class SymbolExtractor extends LittleBaseListener {
     @Override public void exitVar_decl(LittleParser.Var_declContext ctx) {
         BNode id_tail = node_stack.pop();
         BNode id = node_stack.pop();
-        syntaxTree.add_child(new BNode("var_decl", id, id_tail));
+        syntax_tree.add_child(new BNode("var_decl", id, id_tail));
     }
 
     // TODO: New
@@ -116,17 +116,18 @@ public class SymbolExtractor extends LittleBaseListener {
 
     @Override public void enterFunc_decl(LittleParser.Func_declContext ctx) {
         // Creating table based on the name of the function
-//        currentTable.put(ctx.id().getText(), new SymbolTable(ctx.id().getText()));
-//        symbolTable_Stack.push(ctx.id().getText());
         ArrayList<String> function = new ArrayList<>();
+
         function.add(ctx.getChild(1).getText() );
         function.add(ctx.getChild(2).getText());
+
         currentTable.put(ctx.id().getText(), new SymbolTable(ctx.id().getText()));
         symbolTable_Stack.push(ctx.id().getText());
+
         if(function != null) {
-            syntaxTree.add_child(new ScopeNode(function.get(0) + ": " + function.get(1) + ";"));
+            syntax_tree.add_child(new ScopeNode(function.get(0) + ": " + function.get(1) + ";"));
         } else {
-            syntaxTree = (ScopeNode) syntaxTree.getChild(syntaxTree.children_length() - 1);
+            syntax_tree = (ScopeNode) syntax_tree.getChild(syntax_tree.children_length() - 1);
         }
     }
 
@@ -151,9 +152,9 @@ public class SymbolExtractor extends LittleBaseListener {
         BNode expression = node_stack.pop();
 
         BNode id = node_stack.pop();
-        System.out.println(id.element);
-        System.out.println(expression.element);
-        syntaxTree.add_child(new BNode("assign_expr", id, expression));
+//        System.out.println(id.element);
+//        System.out.println(expression.element);
+        syntax_tree.add_child(new BNode("assign_expr", id, expression));
 
     }
 // ---------------------------------------------------------------------------------------------------------------------
@@ -212,7 +213,7 @@ public class SymbolExtractor extends LittleBaseListener {
     @Override public void exitWrite_stmt(LittleParser.Write_stmtContext ctx) {
         BNode id_tail = node_stack.pop();
         BNode binary_node = new BNode(node_stack.pop().getElement());
-        syntaxTree.add_child(new BNode("WRITE", binary_node, id_tail));
+        syntax_tree.add_child(new BNode("WRITE", binary_node, id_tail));
     }
 
     // TODO: New
@@ -255,7 +256,7 @@ public class SymbolExtractor extends LittleBaseListener {
     @Override public void exitRead_stmt(LittleParser.Read_stmtContext ctx) {
         BNode id_tail = node_stack.pop();
         BNode binary_node = new BNode(node_stack.pop().getElement());
-        syntaxTree.add_child(new BNode("READ", binary_node, id_tail));
+        syntax_tree.add_child(new BNode("READ", binary_node, id_tail));
     }
 
     // TODO: New
@@ -301,15 +302,15 @@ public class SymbolExtractor extends LittleBaseListener {
         Stack<Integer> index_stack = new Stack<>();
         index_stack.push(0);
 
-        while (!syntaxTree.getElement().equals(scope)) {
-            for (int index = index_stack.peek() + 1; index < syntaxTree.children_length(); index++) {
-                if (syntaxTree.getChild(index).getElement().contains(scope)) {
-                    syntaxTree = (ScopeNode)syntaxTree.getChild(index);
+        while (!syntax_tree.getElement().equals(scope)) {
+            for (int index = index_stack.peek() + 1; index < syntax_tree.children_length(); index++) {
+                if (syntax_tree.getChild(index).getElement().contains(scope)) {
+                    syntax_tree = (ScopeNode) syntax_tree.getChild(index);
                     break;
                 }
-                if (syntaxTree.getChild(index) instanceof ScopeNode) {
+                if (syntax_tree.getChild(index) instanceof ScopeNode) {
                     index_stack.push(-1);
-                    syntaxTree = (ScopeNode)syntaxTree.getChild(index);
+                    syntax_tree = (ScopeNode) syntax_tree.getChild(index);
                     break;
                 }
                 if (!index_stack.empty()) {
@@ -322,6 +323,6 @@ public class SymbolExtractor extends LittleBaseListener {
         }
     }
     public ASTNode getTree() {
-        return syntaxTree;
+        return syntax_tree;
     }
 }// end SymbolExtractor class
