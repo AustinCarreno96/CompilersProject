@@ -17,8 +17,9 @@ public class BNode extends ASTNode {
         this.right_child = right_child;
     }
 
+
     protected String getElement() {
-        return null;
+        return element;
     }
 
 
@@ -36,6 +37,18 @@ public class BNode extends ASTNode {
 
     }
 
+    public void print(BNode bn) {
+        System.out.println("Element: " + bn.getElement());
+        if (!bn.isLeaf()) {
+            System.out.println("Left Node of " + bn.getElement());
+            assert bn.left_child != null;
+            print(bn.left_child);
+            System.out.println("Right Node of " + bn.getElement());
+            assert bn.right_child != null;
+            print(bn.right_child);
+        }
+    }
+
 
     public BNode getLeftChild() {
         return left_child;
@@ -46,11 +59,7 @@ public class BNode extends ASTNode {
     }
 
     public boolean isLeaf() {
-        if (getLeftChild() == null && getRightChild() == null) {
-            return true;
-        } else {
-            return false;
-        }
+        return getLeftChild() == null && getRightChild() == null;
     }
 }
 
