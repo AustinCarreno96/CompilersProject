@@ -1,17 +1,12 @@
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
-import java.io.FileInputStream;
-//import java.io.FileNotFoundException;
-import java.io.InputStream;
-//import java.util.Iterator;
-//import java.util.LinkedHashMap;
-//import java.util.Map;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 
 public class Driver {
     public static void main(String[] args) throws Exception {
-        InputStream inputStream = new FileInputStream(args[0]);
-        ANTLRInputStream input = new ANTLRInputStream(inputStream);
-
+        BufferedReader buff_read  = new BufferedReader(new InputStreamReader(System.in));
+        ANTLRInputStream input = new ANTLRInputStream(buff_read);
         LittleLexer lexer = new LittleLexer(input);
 
         // Removes standard error handling (would recover errors)
@@ -35,8 +30,5 @@ public class Driver {
         Assembly generator = new Assembly();
 
         generator.createAssembly((ScopeNode) ast);
-//        generator.createAssemblyCode((ScopeNode) ast);
-//        Iterator<Map.Entry<String, SymbolTable>> iterator = map.entrySet().iterator();
-
-    }
-}
+    }// end main()
+}// end Driver class
