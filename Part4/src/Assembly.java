@@ -6,14 +6,24 @@ public class Assembly {
     private int register_counter = 0;
 
     public Assembly() {}
-    public void createAssembly(ScopeNode sn) {
-        asm.add(";tiny code");
-        asm.addAll(processTree(sn, new ArrayList<>()));
-        asm.add("yolo :)");
-        System.out.println();
 
-        for(int i = 0; i < asm.size() / 2; i++) {
-            System.out.println(asm.get(i));
+
+    public void createAssembly(ScopeNode scope_node) {
+        ArrayList<String> printed_code = new ArrayList<String>();
+        asm.add(";tiny code");
+        asm.addAll(processTree(scope_node, new ArrayList<>()));
+//        asm.add("yolo :)");
+//        System.out.println();
+
+        for (int index = 0; index < asm.size(); index++) {
+            if (printed_code.contains(asm.get(index))) {
+                continue;
+            } else {
+                printed_code.add(asm.get(index));
+            }
+
+
+            System.out.println(asm.get(index));
         }// end for loop
 
         asm.add("sys halt");
@@ -34,6 +44,7 @@ public class Assembly {
         return tree_strings;
     }// end processTree()
 
+
     private ArrayList<String> processBinaryTree(BNode binary_node, ArrayList<String> tree_strings) {
         String operation;
         String int_operation;
@@ -47,10 +58,7 @@ public class Assembly {
             String[] split_string = element.split(" ");
 
             if (split_string.length > 1) {
-                if (tree_strings.contains(element)) {
-                    return tree_strings;
-                } else if (tree_strings.contains("var " + split_string[1])
-                        || tree_strings.contains("str " + split_string[1] + " " + split_string[2])) {
+                if (tree_strings.contains("var " + split_string[1]) || tree_strings.contains("str " + split_string[1] + " " + split_string[2])) {
                     element = split_string[0] + ":" + split_string[1];
                 } else if (split_string[0].equals("STRING")) {
                     element = "str " + split_string[1] + " " + split_string[2];
@@ -66,317 +74,317 @@ public class Assembly {
         }// end if statement
 
         // ADD operation
-//        if (binary_node.getElement().equals("+")) {
-//            ArrayList<String> oldStrings = new ArrayList<>(tree_strings);
-//            ArrayList<String> left = new ArrayList<>(processBinaryTree(binary_node.getLeftChild(), tree_strings)); //left should always have size() == 1
-//            ArrayList<String> right = new ArrayList<>(processBinaryTree(binary_node.getRightChild(), tree_strings));
-//
-//            for (int i = 0; i < oldStrings.size(); i++) {
-//                right.remove(0);
-//                left.remove(0);
-//            }
-//
-//            String leftside = left.get(0);
-//            String[] lsplit = leftside.split(":");
-//            String type = lsplit[0];
-//
-//            String[] assignVars = new String[right.size()];
-//            for (int i = 0; i < assignVars.length; i++) {
-//                assignVars[i] = right.get(i).split(":")[1];
-//            }
-//            if (assignVars.length <= 2) {
-//                if (type.equals("INT")) {
-//                    tree_strings.add("move " + assignVars[0] + " r" + register_counter);
-//                    tree_strings.add("addi " + assignVars[1] + " r" + register_counter);
-//                }
-//                else {
-//                    tree_strings.add("move " + assignVars[0] + " r" + register_counter);
-//                    tree_strings.add("addr " + assignVars[1] + " r" + register_counter);
-//                }
-//            }
-//            register_counter++;
-//            return tree_strings;
-//        }
-//        if (binary_node.getElement().equals("-")) {
-//            ArrayList<String> oldStrings = new ArrayList<>(tree_strings);
-//            ArrayList<String> left = new ArrayList<>(processBinaryTree(binary_node.getLeftChild(), tree_strings)); //left should always have size() == 1
-//            ArrayList<String> right = new ArrayList<>(processBinaryTree(binary_node.getRightChild(), tree_strings));
-//
-//            for (int i = 0; i < oldStrings.size(); i++) {
-//                right.remove(0);
-//                left.remove(0);
-//            }
-//
-//            String leftside = left.get(0);
-//            String[] lsplit = leftside.split(":");
-//            String type = lsplit[0];
-//
-//            String[] assignVars = new String[right.size()];
-//            for (int i = 0; i < assignVars.length; i++) {
-//                assignVars[i] = right.get(i).split(":")[1];
-//            }
-//            if (assignVars.length <= 2) {
-//                if (type.equals("INT")) {
-//                    tree_strings.add("move " + assignVars[0] + " r" + register_counter);
-//                    tree_strings.add("subi " + assignVars[1] + " r" + register_counter);
-//                }
-//                else {
-//                    tree_strings.add("move " + assignVars[0] + " r" + register_counter);
-//                    tree_strings.add("subr " + assignVars[1] + " r" + register_counter);
-//                }
-//            }
-//            register_counter++;
-//            return tree_strings;
-//        }
-//        if (binary_node.getElement().equals("*")) {
-//            ArrayList<String> oldStrings = new ArrayList<>(tree_strings);
-//            ArrayList<String> left = new ArrayList<>(processBinaryTree(binary_node.getLeftChild(), tree_strings)); //left should always have size() == 1
-//            ArrayList<String> right = new ArrayList<>(processBinaryTree(binary_node.getRightChild(), tree_strings));
-//
-//            for (int i = 0; i < oldStrings.size(); i++) {
-//                right.remove(0);
-//                left.remove(0);
-//            }
-//
-//            String leftside = left.get(0);
-//            String[] lsplit = leftside.split(":");
-//            String type = lsplit[0];
-//
-//            String[] assignVars = new String[right.size()];
-//            for (int i = 0; i < assignVars.length; i++) {
-//                assignVars[i] = right.get(i).split(":")[1];
-//            }
-//            if (assignVars.length <= 2) {
-//                if (type.equals("INT")) {
-//                    tree_strings.add("move " + assignVars[0] + " r" + register_counter);
-//                    tree_strings.add("muli " + assignVars[1] + " r" + register_counter);
-//                }
-//                else {
-//                    tree_strings.add("move " + assignVars[0] + " r" + register_counter);
-//                    tree_strings.add("mulr " + assignVars[1] + " r" + register_counter);
-//                }
-//            }
-//            register_counter++;
-//            return tree_strings;
-//        }
-//        if (binary_node.getElement().equals("/")) {
-//            ArrayList<String> oldStrings = new ArrayList<>(tree_strings);
-//            ArrayList<String> left = new ArrayList<>(processBinaryTree(binary_node.getLeftChild(), tree_strings)); //left should always have size() == 1
-//            ArrayList<String> right = new ArrayList<>(processBinaryTree(binary_node.getRightChild(), tree_strings));
-//
-//            for (int i = 0; i < oldStrings.size(); i++) {
-//                right.remove(0);
-//                left.remove(0);
-//            }
-//
-//            String leftside = left.get(0);
-//            String[] lsplit = leftside.split(":");
-//            String type = lsplit[0];
-//
-//            String[] assignVars = new String[right.size()];
-//            for (int i = 0; i < assignVars.length; i++) {
-//                assignVars[i] = right.get(i).split(":")[1];
-//            }
-//            if (assignVars.length <= 2) {
-//                if (type.equals("INT")) {
-//                    tree_strings.add("move " + assignVars[0] + " r" + register_counter);
-//                    tree_strings.add("divi " + assignVars[1] + " r" + register_counter);
-//                }
-//                else {
-//                    tree_strings.add("move " + assignVars[0] + " r" + register_counter);
-//                    tree_strings.add("divr " + assignVars[1] + " r" + register_counter);
-//                }
-//            }
-//            register_counter++;
-//            return tree_strings;
-//        }
-//        // assignment
-//        if (binary_node.getElement().equals("assign_expr")) {
-//            ArrayList<String> oldStrings = new ArrayList<>(tree_strings);
-//            processBinaryTree(binary_node.getLeftChild(), tree_strings); //left should always have size() == 1
-//            ArrayList<String> right = new ArrayList<>(processBinaryTree(binary_node.getRightChild(), tree_strings));
-//
-//            if (oldStrings.size() > 0) {
-//                right.subList(0, oldStrings.size()).clear();
-//            }
-//
-//
-//            boolean flag = false;
-//            String[] assignVars = new String[right.size()];
-//
-//            for (int i = 0; i < assignVars.length; i++) {
-//                if (right.get(i).split(":").length > 1) {
-//                    assignVars[i] = right.get(i).split(":")[1];
-//                }
-//                else {
-//                    flag = true;
-//                    break;
-//                }
-//            }
-//
-//            String tempa = tree_strings.remove(tree_strings.size() - 1);
-//            String tempb = tree_strings.remove(tree_strings.size() - 1);
-//
-//            if (assignVars.length <= 2) {
-//                tree_strings.add("move " + assignVars[1] + " " + "r" + register_counter);
-//                tree_strings.add("move r" + register_counter + " " + assignVars[0]);
-//            }
-//            if (flag) {
-//                tree_strings.remove(tree_strings.size() - 1);
-//                tree_strings.remove(tree_strings.size() - 1);
-//                tree_strings.remove(tree_strings.size() - 1);
-//                tree_strings.add(tempb);
-//                tree_strings.add(tempa);
-//                tree_strings.add("move r" + --register_counter + " " + assignVars[0]);
-//            }
-//
-//            register_counter++;
-//            return tree_strings;
-//        }
-//
-//        if (binary_node.getElement().equals("var_decl")) {
-//            processBinaryTree(binary_node.getLeftChild(), tree_strings);
-//            processBinaryTree(binary_node.getRightChild(), tree_strings);
-//            return tree_strings;
-//        }
-//        if (binary_node.getElement().equals("id_tail")) {
-//            processBinaryTree(binary_node.getLeftChild(), tree_strings);
-//            processBinaryTree(binary_node.getRightChild(), tree_strings);
-//            return tree_strings;
-//        }
-//        if (binary_node.getElement().equals("READ")) {
-//            ArrayList<String> oldStrings = new ArrayList<>(tree_strings);
-//            ArrayList<String> left = new ArrayList<>(processBinaryTree(binary_node.getLeftChild(), tree_strings)); //left should always have size() == 1
-//            ArrayList<String> right = new ArrayList<>(processBinaryTree(binary_node.getRightChild(), tree_strings));
-//
-//            for (int i = 0; i < oldStrings.size(); i++) {
-//                right.remove(0);
-//                left.remove(0);
-//            }
-//
-//            String leftside = left.get(0);
-//            String[] lsplit = leftside.split(":");
-//            String type = lsplit[0];
-//
-//            String[] assignVars = new String[right.size()];
-//            for (int i = 0; i < assignVars.length; i++) {
-//                assignVars[i] = right.get(i).split(":")[1];
-//            }
-//
-//            tree_strings.remove(tree_strings.size() - 1);
-//            tree_strings.remove(tree_strings.size() - 1);
-//
-//            for (String var: assignVars) {
-//                if (type.equals("INT")) {
-//                    tree_strings.add("sys readi " + var);
-//                }
-//                else {
-//                    tree_strings.add("sys readr " + var);
-//                }
-//            }
-//
-//            return tree_strings;
-//        }
-//        if (binary_node.getElement().equals("WRITE")) {
-//            ArrayList<String> oldStrings = new ArrayList<>(tree_strings);
-//            ArrayList<String> left = new ArrayList<>(processBinaryTree(binary_node.getLeftChild(), tree_strings)); //left should always have size() == 1
-//            ArrayList<String> right = new ArrayList<>(processBinaryTree(binary_node.getRightChild(), tree_strings));
-//
-//            if (right.size() == 0) {
-//                String leftside = left.get(left.size() - 1);
-//                String[] lsplit = leftside.split(":");
-//                String type = lsplit[0];
-//                String var = lsplit[1];
-//
-//                tree_strings.remove(tree_strings.size() - 1);
-//
-//                if (type.equals("INT")) {
-//                    tree_strings.add("sys writei " + var);
-//                } else if (type.equals("FLOAT")) {
-//                    tree_strings.add("sys writer " + var);
-//                } else {
-//                    tree_strings.add("sys writes " + var);
-//                }
-//
-//            }
-//
-//            else {
-//                for (int i = 0; i < oldStrings.size(); i++) {
-//                    right.remove(0);
-//                    left.remove(0);
-//                }
-//
-//                String[] assignVars = new String[right.size()];
-//                String[] varTypes = new String[right.size()];
-//                for (int i = 0; i < assignVars.length; i++) {
-//                    varTypes[i] = right.get(i).split(":")[0];
-//                    assignVars[i] = right.get(i).split(":")[1];
-//                }
-//
-//                for (int i = 0; i < assignVars.length; i++) {
-//                    tree_strings.remove(tree_strings.size() - 1);
-//                }
-//
-//                for (int i = 0; i < assignVars.length; i++) {
-//                    if (varTypes[i].equals("INT")) {
-//                        tree_strings.add("sys writei " + assignVars[i]);
-//                    } else if (varTypes[i].equals("FLOAT")) {
-//                        tree_strings.add("sys writer " + assignVars[i]);
-//                    } else {
-//                        tree_strings.add("sys writes " + assignVars[i]);
-//                    }
-//                }
-//            }
-//
-//
-//            return tree_strings;
-//        }
+        if (binary_node.getElement().equals("+")) {
+            ArrayList<String> oldStrings = new ArrayList<>(tree_strings);
+            ArrayList<String> left = new ArrayList<>(processBinaryTree(binary_node.getLeftChild(), tree_strings)); //left should always have size() == 1
+            ArrayList<String> right = new ArrayList<>(processBinaryTree(binary_node.getRightChild(), tree_strings));
+
+            for (int i = 0; i < oldStrings.size(); i++) {
+                right.remove(0);
+                left.remove(0);
+            }
+
+            String leftside = left.get(0);
+            String[] lsplit = leftside.split(":");
+            String type = lsplit[0];
+
+            String[] assignVars = new String[right.size()];
+            for (int i = 0; i < assignVars.length; i++) {
+                assignVars[i] = right.get(i).split(":")[1];
+            }
+            if (assignVars.length <= 2) {
+                if (type.equals("INT")) {
+                    tree_strings.add("move " + assignVars[0] + " r" + register_counter);
+                    tree_strings.add("addi " + assignVars[1] + " r" + register_counter);
+                }
+                else {
+                    tree_strings.add("move " + assignVars[0] + " r" + register_counter);
+                    tree_strings.add("addr " + assignVars[1] + " r" + register_counter);
+                }
+            }
+            register_counter++;
+            return tree_strings;
+        }
+        if (binary_node.getElement().equals("-")) {
+            ArrayList<String> oldStrings = new ArrayList<>(tree_strings);
+            ArrayList<String> left = new ArrayList<>(processBinaryTree(binary_node.getLeftChild(), tree_strings)); //left should always have size() == 1
+            ArrayList<String> right = new ArrayList<>(processBinaryTree(binary_node.getRightChild(), tree_strings));
+
+            for (int i = 0; i < oldStrings.size(); i++) {
+                right.remove(0);
+                left.remove(0);
+            }
+
+            String leftside = left.get(0);
+            String[] lsplit = leftside.split(":");
+            String type = lsplit[0];
+
+            String[] assignVars = new String[right.size()];
+            for (int i = 0; i < assignVars.length; i++) {
+                assignVars[i] = right.get(i).split(":")[1];
+            }
+            if (assignVars.length <= 2) {
+                if (type.equals("INT")) {
+                    tree_strings.add("move " + assignVars[0] + " r" + register_counter);
+                    tree_strings.add("subi " + assignVars[1] + " r" + register_counter);
+                }
+                else {
+                    tree_strings.add("move " + assignVars[0] + " r" + register_counter);
+                    tree_strings.add("subr " + assignVars[1] + " r" + register_counter);
+                }
+            }
+            register_counter++;
+            return tree_strings;
+        }
+        if (binary_node.getElement().equals("*")) {
+            ArrayList<String> oldStrings = new ArrayList<>(tree_strings);
+            ArrayList<String> left = new ArrayList<>(processBinaryTree(binary_node.getLeftChild(), tree_strings)); //left should always have size() == 1
+            ArrayList<String> right = new ArrayList<>(processBinaryTree(binary_node.getRightChild(), tree_strings));
+
+            for (int i = 0; i < oldStrings.size(); i++) {
+                right.remove(0);
+                left.remove(0);
+            }
+
+            String leftside = left.get(0);
+            String[] lsplit = leftside.split(":");
+            String type = lsplit[0];
+
+            String[] assignVars = new String[right.size()];
+            for (int i = 0; i < assignVars.length; i++) {
+                assignVars[i] = right.get(i).split(":")[1];
+            }
+            if (assignVars.length <= 2) {
+                if (type.equals("INT")) {
+                    tree_strings.add("move " + assignVars[0] + " r" + register_counter);
+                    tree_strings.add("muli " + assignVars[1] + " r" + register_counter);
+                }
+                else {
+                    tree_strings.add("move " + assignVars[0] + " r" + register_counter);
+                    tree_strings.add("mulr " + assignVars[1] + " r" + register_counter);
+                }
+            }
+            register_counter++;
+            return tree_strings;
+        }
+        if (binary_node.getElement().equals("/")) {
+            ArrayList<String> oldStrings = new ArrayList<>(tree_strings);
+            ArrayList<String> left = new ArrayList<>(processBinaryTree(binary_node.getLeftChild(), tree_strings)); //left should always have size() == 1
+            ArrayList<String> right = new ArrayList<>(processBinaryTree(binary_node.getRightChild(), tree_strings));
+
+            for (int i = 0; i < oldStrings.size(); i++) {
+                right.remove(0);
+                left.remove(0);
+            }
+
+            String leftside = left.get(0);
+            String[] lsplit = leftside.split(":");
+            String type = lsplit[0];
+
+            String[] assignVars = new String[right.size()];
+            for (int i = 0; i < assignVars.length; i++) {
+                assignVars[i] = right.get(i).split(":")[1];
+            }
+            if (assignVars.length <= 2) {
+                if (type.equals("INT")) {
+                    tree_strings.add("move " + assignVars[0] + " r" + register_counter);
+                    tree_strings.add("divi " + assignVars[1] + " r" + register_counter);
+                }
+                else {
+                    tree_strings.add("move " + assignVars[0] + " r" + register_counter);
+                    tree_strings.add("divr " + assignVars[1] + " r" + register_counter);
+                }
+            }
+            register_counter++;
+            return tree_strings;
+        }
+        // assignment
+        if (binary_node.getElement().equals("assign_expr")) {
+            ArrayList<String> oldStrings = new ArrayList<>(tree_strings);
+            processBinaryTree(binary_node.getLeftChild(), tree_strings); //left should always have size() == 1
+            ArrayList<String> right = new ArrayList<>(processBinaryTree(binary_node.getRightChild(), tree_strings));
+
+            if (oldStrings.size() > 0) {
+                right.subList(0, oldStrings.size()).clear();
+            }
 
 
-        switch (binary_node.getElement()) {
-            case "+":
-                operation = "addr ";
-                int_operation = "addi ";
-                register_counter++;
-                return math_operation(int_operation, operation, tree_strings, binary_node, register_counter);
+            boolean flag = false;
+            String[] assignVars = new String[right.size()];
 
-            case "-":
-                operation = "subr ";
-                int_operation = "subi ";
-                register_counter++;
-                return math_operation(int_operation, operation, tree_strings, binary_node, register_counter);
+            for (int i = 0; i < assignVars.length; i++) {
+                if (right.get(i).split(":").length > 1) {
+                    assignVars[i] = right.get(i).split(":")[1];
+                }
+                else {
+                    flag = true;
+                    break;
+                }
+            }
 
-            case "*":
-                operation = "mulr ";
-                int_operation = "muli ";
-                register_counter++;
-                return math_operation(int_operation, operation, tree_strings, binary_node, register_counter);
+            String tempa = tree_strings.remove(tree_strings.size() - 1);
+            String tempb = tree_strings.remove(tree_strings.size() - 1);
 
-            case "/":
-                operation = "divr ";
-                int_operation = "divi ";
-                register_counter++;
-                return math_operation(int_operation, operation, tree_strings, binary_node, register_counter);
+            if (assignVars.length <= 2) {
+                tree_strings.add("move " + assignVars[1] + " " + "r" + register_counter);
+                tree_strings.add("move r" + register_counter + " " + assignVars[0]);
+            }
+            if (flag) {
+                tree_strings.remove(tree_strings.size() - 1);
+                tree_strings.remove(tree_strings.size() - 1);
+                tree_strings.remove(tree_strings.size() - 1);
+                tree_strings.add(tempb);
+                tree_strings.add(tempa);
+                tree_strings.add("move r" + --register_counter + " " + assignVars[0]);
+            }
 
-            case "assign_expr":
-                register_counter++;
-                return assign_expr(tree_strings, binary_node);
+            register_counter++;
+            return tree_strings;
+        }
 
-            case "var_decl":
-            case "id_tail":
-                processBinaryTree(binary_node.getLeftChild(), tree_strings);
-                processBinaryTree(binary_node.getRightChild(), tree_strings);
-                break;
+        if (binary_node.getElement().equals("var_decl")) {
+            processBinaryTree(binary_node.getLeftChild(), tree_strings);
+            processBinaryTree(binary_node.getRightChild(), tree_strings);
+            return tree_strings;
+        }
+        if (binary_node.getElement().equals("id_tail")) {
+            processBinaryTree(binary_node.getLeftChild(), tree_strings);
+            processBinaryTree(binary_node.getRightChild(), tree_strings);
+            return tree_strings;
+        }
+        if (binary_node.getElement().equals("READ")) {
+            ArrayList<String> oldStrings = new ArrayList<>(tree_strings);
+            ArrayList<String> left = new ArrayList<>(processBinaryTree(binary_node.getLeftChild(), tree_strings)); //left should always have size() == 1
+            ArrayList<String> right = new ArrayList<>(processBinaryTree(binary_node.getRightChild(), tree_strings));
 
-            case "READ":
-                return READ_statement(tree_strings, binary_node);
+            for (int i = 0; i < oldStrings.size(); i++) {
+                right.remove(0);
+                left.remove(0);
+            }
 
-            case "WRITE":
-                return WRITE_statement(tree_strings, binary_node);
+            String leftside = left.get(0);
+            String[] lsplit = leftside.split(":");
+            String type = lsplit[0];
 
-            default:
-                break;
-        }// end switch statement
+            String[] assignVars = new String[right.size()];
+            for (int i = 0; i < assignVars.length; i++) {
+                assignVars[i] = right.get(i).split(":")[1];
+            }
+
+            tree_strings.remove(tree_strings.size() - 1);
+            tree_strings.remove(tree_strings.size() - 1);
+
+            for (String var: assignVars) {
+                if (type.equals("INT")) {
+                    tree_strings.add("sys readi " + var);
+                }
+                else {
+                    tree_strings.add("sys readr " + var);
+                }
+            }
+
+            return tree_strings;
+        }
+        if (binary_node.getElement().equals("WRITE")) {
+            ArrayList<String> oldStrings = new ArrayList<>(tree_strings);
+            ArrayList<String> left = new ArrayList<>(processBinaryTree(binary_node.getLeftChild(), tree_strings)); //left should always have size() == 1
+            ArrayList<String> right = new ArrayList<>(processBinaryTree(binary_node.getRightChild(), tree_strings));
+
+            if (right.size() == 0) {
+                String leftside = left.get(left.size() - 1);
+                String[] lsplit = leftside.split(":");
+                String type = lsplit[0];
+                String var = lsplit[1];
+
+                tree_strings.remove(tree_strings.size() - 1);
+
+                if (type.equals("INT")) {
+                    tree_strings.add("sys writei " + var);
+                } else if (type.equals("FLOAT")) {
+                    tree_strings.add("sys writer " + var);
+                } else {
+                    tree_strings.add("sys writes " + var);
+                }
+
+            }
+
+            else {
+                for (int i = 0; i < oldStrings.size(); i++) {
+                    right.remove(0);
+                    left.remove(0);
+                }
+
+                String[] assignVars = new String[right.size()];
+                String[] varTypes = new String[right.size()];
+                for (int i = 0; i < assignVars.length; i++) {
+                    varTypes[i] = right.get(i).split(":")[0];
+                    assignVars[i] = right.get(i).split(":")[1];
+                }
+
+                for (int i = 0; i < assignVars.length; i++) {
+                    tree_strings.remove(tree_strings.size() - 1);
+                }
+
+                for (int i = 0; i < assignVars.length; i++) {
+                    if (varTypes[i].equals("INT")) {
+                        tree_strings.add("sys writei " + assignVars[i]);
+                    } else if (varTypes[i].equals("FLOAT")) {
+                        tree_strings.add("sys writer " + assignVars[i]);
+                    } else {
+                        tree_strings.add("sys writes " + assignVars[i]);
+                    }
+                }
+            }
+
+
+            return tree_strings;
+        }
+
+
+//        switch (binary_node.getElement()) {
+//            case "+":
+//                operation = "addr ";
+//                int_operation = "addi ";
+//                register_counter++;
+//                return math_operation(int_operation, operation, tree_strings, binary_node, register_counter);
+//
+//            case "-":
+//                operation = "subr ";
+//                int_operation = "subi ";
+//                register_counter++;
+//                return math_operation(int_operation, operation, tree_strings, binary_node, register_counter);
+//
+//            case "*":
+//                operation = "mulr ";
+//                int_operation = "muli ";
+//                register_counter++;
+//                return math_operation(int_operation, operation, tree_strings, binary_node, register_counter);
+//
+//            case "/":
+//                operation = "divr ";
+//                int_operation = "divi ";
+//                register_counter++;
+//                return math_operation(int_operation, operation, tree_strings, binary_node, register_counter);
+//
+//            case "assign_expr":
+//                register_counter++;
+//                return assign_expr(tree_strings, binary_node);
+//
+//            case "var_decl":
+//            case "id_tail":
+//                processBinaryTree(binary_node.getLeftChild(), tree_strings);
+//                processBinaryTree(binary_node.getRightChild(), tree_strings);
+//                break;
+//
+//            case "READ":
+//                return READ_statement(tree_strings, binary_node);
+//
+//            case "WRITE":
+//                return WRITE_statement(tree_strings, binary_node);
+//
+//            default:
+//                break;
+//        }// end switch statement
 
 
         return tree_strings;
@@ -415,6 +423,7 @@ public class Assembly {
 
         return tree_strings;
     }// end math_operations()
+
 
     private ArrayList<String> assign_expr(ArrayList<String> tree_strings, BNode binary_node) {
         boolean flag = false;
@@ -456,6 +465,7 @@ public class Assembly {
 
         return tree_strings;
     }// end assign_expr()
+
 
     private ArrayList<String> READ_statement(ArrayList<String> tree_strings, BNode binary_node) {
         ArrayList<String> old = new ArrayList<>(tree_strings);
